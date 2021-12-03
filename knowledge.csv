@@ -1,6 +1,0 @@
-question, answer
-why navigate with terminal, most linux servers won't have a desktop environment
-what is git, source control like a file history
-why use git, source control means mistakes can be rolled back
-how to reduce command calls, using && you can combine terminal commands onto one line to all run after eachother
-what is a .gitignore, a file that tells git what files/folders not to commit to git
