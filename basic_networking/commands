@@ -1,0 +1,11 @@
+ifconfig
+    Display network information
+    Using DNS: nameserver 127.0.0.53
+vi /etc/resolv.conf
+    Set DNS to google (8.8.8.8) by editing resolv.conf file
+nslookup www.enterpriseautomation.co.uk
+    www.enterpriseautomation.co.uk ip = 35.177.36.146
+arp-scan -l
+    scan local network for all active ip addresses
+hostname
+    displays hostname: liam-max-server
