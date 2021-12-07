@@ -1,0 +1,21 @@
+cat /etc/resolv.conf
+    displays DNS: nameserver 127.0.0.53
+vi /etc/netplan/00-installer-config.yaml
+    configure network to static ip
+vi /etc/resolv.conf
+    set DNS
+reboot
+ip addr show dev ens160
+    display ip information
+nslookup www.enterpriseautomation.co.uk
+    displays address: 35.177.36.146
+ping 192.168.1.122
+    ping other trainee network giving response showing server is up
+hostname
+    displays vm hostname: liam-ubuntu
+ifconfig
+    gives ip 192.168.1.130
+vi /etc/hosts
+    added 192.168.1.122 kalem-max
+ping kalem-max
+    confirms can ping by giving hostname
