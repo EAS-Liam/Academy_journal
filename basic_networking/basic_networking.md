@@ -1,4 +1,4 @@
-Basic Netwoorking:
+Basic Networking:
 
 What I learned:
 - Network configuration happens inside a file on linux based systems.
