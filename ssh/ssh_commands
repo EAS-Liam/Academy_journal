@@ -1,2 +1,9 @@
 ssh user@10.0.0.5
-    connects me into max' vm allowing me controll of the system
+    connects me into max' vm after entering the user password allowing me controll of the system
+
+ssh-keygen
+    This command generates the public and private keys for the ssh connections
+    By not specifying a name ordirectory for the file it will default to the .ssh folder with the files id_rsa and id_rsa.public
+
+ssh-copy-id -i ~/.ssh/id_rsa.pub user@10.0.0.5
+    This command is used to send the public key to max' system now allowing me to connect without needing the password
