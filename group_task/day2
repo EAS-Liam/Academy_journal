@@ -1,0 +1,38 @@
+    This second task was about setting up a connection link out of the closed network we were in. 1 system needed to be the DHCP, 1 needed to be the Gateway and 1 needed to be the DNS. My system was chosen to be the DNS
+    
+    The first thing to do was to once again set our static IP
+
+nmtui
+    We used the nmtui menu to set our IP, Gateway and DNS to be set to the correct addresses
+
+    I was breifly connected to the internet to allow me to download the required bind untilities
+dnf install bind bind-untils
+    this command was used to download those packages
+    I was then disconnected from the internet once again
+
+systemctl enable named
+system status named
+    These 2 commands were run first to enable the DNS and chek the status of internet
+    With this working it was now time to start edditing it
+
+vi /ect/named.conf
+    This was the first file edited to remove the localhost connection and add the IP range of our network to the query
+    Then at the bottom of the file I needed to create the zone links to the forwardzone and reversezone.
+
+vi /var/named/easlab.co.uk
+    This created the forward zone file which was configured to hold the hostnames for each of the team members IP
+
+vi /var/named/10.0.0.db
+    This file was created for the reverse zone file
+
+systemctl restart named
+systemctl status named
+    These 2 commands were used to restart the DNS and check the status of it.
+    At this point I was able to ping one of the members with the app hostname goven in the forward zone file
+    I was also able to ping google meaning I had a link to the internet through the Gateway too
+
+firewall-cmd --permanent --add-port=53/udp
+firewall-cmd --reload
+    These 2 commands were used to ensure firewall privaliges for the other members and restart it to make the changes take effect
+
+    At this point the DNS was working and each of the systems on the network could ping eachother and ping google

@@ -1,0 +1,26 @@
+    First Day task was network style escape room.
+    Each of us had a vm to log into with a message at start.
+    
+    First thing was to setup static IP addresses for our vms
+vi /etc/resolv.conf
+    by edditing the resolv file we could set our static IP
+
+vi /etc/hosts
+    we then edited the hosts file to add eachothers IPs with hostnames
+
+    Next we needed to find the app files that were hinted to in the login messages
+find / -name app*zip
+    the find command was used on Max's system to find the app zip files that would need to be distributed to each vm
+
+    We originally tried to use a scp pull to get the files but were told scp was off limits for this task
+
+    Instead we moved to setting up a http-server with the command:
+http-server
+    when this servre was running on one vm we had the http server for our network
+
+curl https://max/app3.zip
+    curl command was used while http-server was running to request the app3 zip file from max' system
+
+    Next we each had to unzip and modify our app index.js files to ensure they were all running on the same port (80) and each was pointing to the next in the chain.
+
+    Once tha pp link connection was set and each app was running on each machine someone could do a call to app 1 and would get a response from each app down the chain 1-2-3-4-5 until 5 gave out a message.
