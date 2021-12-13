@@ -1,0 +1,38 @@
+Kalem:
+    Doing DHCP
+    started off setting static IP using NMTUI, alternative is rsolve.conf
+    Updated DNF packege using 
+dnf makecash
+    Next was 
+dnf install dhcp-server
+    Next confirgured server config files
+    Template from gogole with adjusted values
+startsystemctl start dhcp
+    That started the dhcp
+    Next max run the http-server
+    Then we could pull the app files and do those
+
+
+Max:
+    First set static IP with resolv.conf
+    Working along side with Liam to help with setting up DNS
+    Was going through articles and keeping track of what Liam was Doing
+    working as a fact checker of sorts and keeping track of syntax
+    After DNS was setup Had to run a http-server to serve the app files to everyone
+
+
+Harrison:
+    Settup static IP
+    Working with Ethan to sort out the Gateway
+    Had some assistance from Rhys
+    Worked with IP-Tables
+    IP-Tables used to set what can go through the Gateway
+    grabbed app from Max with wget while http-server was running
+
+
+Things that tripped us up:
+    Firewall - The firewalls often reset and we didn't notice so we often found ourselves wondering why we couldn't make connections but the solution was to re disable the firewall.
+    Typo in DNS config - I had a missed typo in the DNS config file that took quite a while to spot which meant the forward zone file link was not working correctly.
+    ifdown / ifup - When changing network settings we often forgot we would need to run an ifdown and ifup to reset the network card so taht it used the updated settings.
+    DHCP typos - A few issues with miss typed urls and adresses in DHCP config causing issues at the beginning.
+    App data transfer - App 5 was missing the data transfer at first so would not pass the data from apps 1-2-3-4 onto app 6.
