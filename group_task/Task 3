@@ -1,0 +1,64 @@
+    The third task is to repeat the second task but this time there are som extra restriction.
+    Each person must take on a new task and not the same one they have already done.
+    We no longer have access to vcenter and will need to use SSH to connect to the vms throughout this task.
+    The other restriction is that only the ingress system (Max) and the egress system (Kaine) have an IP address.
+    The frst thing we need to do is find the ingress IP for Max' system so that we can setup DHCP to give the others an IP.
+
+nmap 192.168.1.0/24 -p 22
+    We used nmap to scan the network for IP addresses which were open to an SSH connection.
+    We discovered the IP 192.168.1.150
+
+ssh user@192.168.1.150
+    Using SSH we connected to that IP and confirmed that it was the ingress and gained us access to the first system on the segregated network.
+
+    Once in it was time to setup the dhcp server to distribute the dynamic IPs
+
+dnf install dhcp-server
+    This was used to install the dhcp server package
+
+    Once downloaded it was time to edit the configuration
+vi /etc/dhcp/dhcpd.conf
+    This command was used to enter the file I would need to configured
+    This file was configured with the subnet and netmask and given the desired IP range for the dynamic IP addresses.
+
+systemctl start dhcpd
+systemctl status dhcpd
+    Once configured the dhcpd server could be started and the status checked.
+
+firewall-cmd --add-service=dhcp --permanent
+firewall-cmd --reload
+    Last the firewall needed to be configured to allow the dhcp permission and then restarted.
+
+
+    With each of the systems given a dynamic IP we had access to our VMs.
+    We could use an ssh connection to get into them.
+ssh user@10.0.0.10
+    This was used to ssh into my vm with the dynamic IP.
+
+    Once I had access I could now set a static IP for this vm.
+vi /etc/sysconfig/network-script/ifcfg-ens160
+    With this file I could set my IP to static and set it to 10.0.0.3
+
+    After taht was set in the file I needed to update the network setting.
+ifdown ens160 && ifup ens160
+    I had to use a command chain to be able to shutdown and restart the ens160 network.
+    As soon as the ifdown was run the ssh connection would drp and there would be no way to get access to the vm.
+    This is why I had to use the command chain to make sure that even after I lost connection the vm would bring the network back up.
+    With it back up again I simply had to ssh back into the vm and I now had a static IP.
+
+    Once the gateway was set on 10.0.0.1 we now had access to the internet through that gateway.
+
+dnf install dchp-server
+    It was now time to download the dhcp-server packege for with this system.
+
+vi /etc/dhcp/dhcpd.conf
+    It was now time to configure the dhcp server again on this vm.
+
+systemctl start dhcpd
+systemctl status dhcpd
+    With the configuration set I could run the dhcpd server and check the status to confirm it was running correctly.
+
+firewall-cmd --add-service=dhcp --permanent
+firewall-cmd --reload
+    With that done it's time to add the acception to the firewall again and reload it.
+
