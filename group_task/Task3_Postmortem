@@ -1,0 +1,31 @@
+Postmortem of Task 3 and everyones work:
+
+Kaine:
+Used Kaines machine as Gateway.
+Set up the NAT with IPTable rules.
+NAT system rewrites destination of packets out of local network.
+Flushed rules for firewall with IPTables and setup new ones to forward IPs through Kaines Machine.
+
+Kalem:
+Worked on DNS.
+Started by installing bind and bun-utils needed for DNS server.
+Enabled and checked status.
+Configed named.conf file.
+Created the forward zone with the host names, started with names but updated to apps later.
+Created the reverse zone in same way as forward zone.
+systemctl restart named to restart service.
+systemctl status named to check the server is running with no issues.
+
+Max:
+Helped with troubleshooting issues with Liam.
+Followed along with very similar steps as Liam and was going along as an advisor with Liams dhcp.
+Worked through firewall and port configuration to allow the apps to work.
+Run a find command to find the apps and then ran a http-serevr to allow others to grab their apps.
+Ran into some issues with the ifdown and ifup but worked out running them in chain with && solved the issue.
+
+Harrison:
+Was away for the main task day.
+When returned configured system to static information to catch up the where the task progress was.
+Assisted with DNS setup with Kalem.
+Helped with troubleshooting configuration issues of DNS.
+Configured app to pass data through to next app.
