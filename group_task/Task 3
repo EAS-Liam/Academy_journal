@@ -62,3 +62,43 @@ firewall-cmd --add-service=dhcp --permanent
 firewall-cmd --reload
     With that done it's time to add the acception to the firewall again and reload it.
 
+    With the dhcp server up and running mine and Max' main task was complete.
+
+    Moving on to the last stage we needed to aquire app.zip files from Max' system again.
+
+    One Max was running the http-server we could  grab the files.
+wget http://max/app3.zip
+    Running a wget command I could pull the app3.zip file onto my system.
+
+unzip app3.zip
+    After pulling the zip file I needed to unzip it so that I could access the zip file contents.
+
+vi index.js
+    I now vi into the index.js file of the node app and make sure the data passthrough from my app to the next app is setup correctly.
+
+node index.js &
+    Running the node app with the & symbol allows me to run it in the background meaning that I will still have access to my terminal and can run the curl command from my terminal for testing while my app is still running.
+
+    We decided to change up the hostnames to match app1 etc. instead of be our names and that would only need to be changed in one place rather than each changing our node apps individualy.
+
+curl http://app1
+    Whith all the apps running I could now run a curl command to test that the links are working.
+
+    We had an issue with the link of app1 but apps 2-5 linkned fine.
+
+
+    Before we continued we were given a new curveball to our task.
+    All systems had to be DHCP and none of the systems should have settings set manually.
+
+    After some messing around I found that even if mine (DHCP) was set to have a dynamic IP it would set itself back to Static as the DHCP server needs to be static.
+
+    Other than that everyone else needed to get their information from the DHCP server.
+    For Max and Harrison that was simple, they simply needed to get an IP from the DHCP server and they were good to go.
+    With the DNS and Gateway though I needed to provide them with a reserved IP by adding them as a host to the DHCP config file.
+
+    With that in place we could go ahead and get back to the apps.
+
+    We looked back into the app files and found that after making an acception in the firewall and rebooting we were able to run the apps and have them link correctly.
+
+    We could check this by opening a browser window and going to the ingress IP of 192.168.1.150
+    This gave as the status check of each app and linked to the 6th app on Andrews system.
