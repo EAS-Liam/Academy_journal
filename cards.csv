@@ -10,7 +10,20 @@ Are File_name and file_name the same file?, No linux is case sensitive
 What does the ~ key represent in terminal?, ~ is a link to home 'cd ~' would take you to the current users home firectory
 Why be careful when using the sudo command?, sudo grants temporary root privalages to the next command meaning you could break something
 What does 'ls > file_name' do?, Takes the output from the ls command and stores it in a file
-What is the differance between '>' and '>>'?, '>' will overrite any previouse data and '>>' will append to the end of the old
+What is the differance between '>' and '>>'?, '>' will overwrite any previouse data and '>>' will append to the end of the old
 What is Homebrew?, Homebrew is a package manager for macOS and Linux
 What does a package manager do?, A package manager is used to install remove and update software
 How would you install git with homebrew?, brew install git
+How do you set a hostname in you system?, Add an IP with the desired name to the /etc/hosts file
+How do you search for a file on your system?, Use the find command to search the system for files with specified name
+How would you pull a file from another system?, Run a http-server and use curl/wget OR use the scp command to grab it
+How would you setup a DNS server?, Use a tool like bind and configure the server with forward and reverse zone files to handle the hostnames
+What is the command nmap used for?, nmap can be used to scan the network for open ports on any IP detectable
+What is ssh used for?, ssh is a remote access and allows a user to remote into another system terminal from your terminal
+What is a dhcp server?, The dhcp server is responsible for providing systems with their dynamic IP addresses and any default network information they may require such as DNS and Gateway
+How would you configure a dhcp server?, Configure the dhcp config file to handle a subnet and provide a range that the systems should obtain an IP address within. Then populate network defaults for those systems
+How would you set static networkd information without a GUI?, Each ens has a config file in the network-scripts directory. Edditing this file you can set static network information for your system
+How would you reboot your network interface?, Using the ifdowna and ifup commands in chain with the && allows you to shutdown the specified ens and bring it back up again after
+What happens if you set the dhcp system to dynamic IP?, The system will revert and give itself static information as the dhcp cannot be dynamic
+How would you set a dhcp provided DNS or Gateway system a static IP?, In the dhpc config file you would settup a reserved IP for the specified host. That system will still take all of the information from the dhcp server but will have a static IP
+What is the default port for an ssh connection, By default ssh connections use port 22
