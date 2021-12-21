@@ -1,0 +1,30 @@
+    Task 4 is to automate the process of the previous task with bash scripts.
+
+    First thing we did was capture all of the config and setup files that needed to be editied during the process of seting up the different services.
+    With the config files captured we needed to make sure we had all the commands that needed to be run for each role.
+    With our Academy Journals we had these already captured.
+
+    Next it was onto planning and writing each individual script.
+    My main priority was the Master-Script but I was also collaborating to help write up the other scripts too.
+
+    Planning and writing the DHCP script was done by Harrision with assistance from me and using my Academy Journal write up for the commands and their order.
+    
+    Planning and writing the Master-Script is the main task I have.
+    This script will prompt the user for what they want to set the system it is run on to do asking for Gateway, DHCP or DNS.
+    It will then take the users input and will pull down the required script from github and execute that script.
+
+    At this stage after the first day the DHCP script has been written by Harrison (some alterations may need to be made) and the Master-Script has the bare bones structure of running bash files and ssh hopping.
+
+    Before proceeding with the rest of the master script we decided to run some tests on the individual scripts.
+
+    Starting out I reset the vms back to their initial snapshot and then had to setup the network adapters for the ingress and egress systems.
+
+    With those set we had vms set back to their initial state ready for our script testing.
+
+    We were able to ssh into Kaines vm and then from there could clone the repo containing our scripts.
+    We then ran the command
+ssh root@192.168.1.175 < dhcp.conf
+    This command will tell the system to run the bash file on the supplied ssh system instead of running it on the local system.
+    
+    From this point we could see that in general our script seemed to be running well and was correctly creating and populating the config files with the correct data however we ran into the issue that the dnf and yum package managers were down so at this point we were unable to test downloading and running the services.
+    This we will now pick up tomorrow when hopefully those paclage managers are back up.
