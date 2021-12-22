@@ -28,3 +28,24 @@ ssh root@192.168.1.175 < dhcp.conf
     
     From this point we could see that in general our script seemed to be running well and was correctly creating and populating the config files with the correct data however we ran into the issue that the dnf and yum package managers were down so at this point we were unable to test downloading and running the services.
     This we will now pick up tomorrow when hopefully those paclage managers are back up.
+
+    After coming back the next day the dnf package manager was up and running again so we could start testing our scripts.
+
+ssh root@192.168.1.175 < dhcp.sh
+    We first tested the dhcp script and after ironing out a few directory typos such as looking for network-script instead of network-scripts then we were able to confirm that the dhcp.sh script worked exactly as intended.
+
+
+    We next decided to try testing the gateway scrip. From Kaines machine we tested the gateway script making some minor adjustments where needed to fix any typod and the gateway script seemed to work fine. It setup the iptables and suceeded without errors.
+    However, we did then notice then when we tried to test one of the other machines they did not seem to be able to access the internet through the gateway so the gateway has an issue we have not yet detected.
+    We have confirmed that the systems are having their gateway set to the 10.0.0.1 ip by the dhcp so that is not the issue.
+
+    We decided to take a break from the gateway script and try to test the dns script instead.
+
+    We ran the dns script on kaines vm and after tourbleshooting some syntax errors which were stopping the server from running we got the server up and running fine.
+    The main issue we then run into was the search domain was still defaulting to easlab.co.uk even though the systems were having the domain search easlab.local set by the dhcp.
+
+    The issue turned out to be that because we were testing the DNS on a different system that we will be running it on officially then the dhcp was not pointing everyone to the correct DNS system, after updating the dhcp with the temp change we coudl confirm that the dns was working.
+
+    I then reverted the dhcp back to it's correct value form the temp one set for testing purposes.
+
+    
