@@ -78,3 +78,12 @@ nmcli con up "Wired connection 1"
     When trying to run the apps however we have now run into an issue where the apps will not successfully run in the background. We have the:
 node index.js &
     which should be running the app in the background but for some reason when running from a script like this it seems to run in the foreground regardless meaning we are unable to get all of the apps running from the master script.
+
+    After some troubleshooting we managed to find a method to force the apps to run in the background. we could use the forever flag to make the apps run forever in the background.
+    By adding
+npm install -g forever
+    each of the systems will install that tool and then we could run the apps with
+forever start index.js
+    Made forced the apps to run in the background and allowed the msater script to move on while leaving the apps running on each machine.
+
+    We originally ran into an issue with the npm install and discovered that it was tied to the dns ignore that was being set on the ingress and egress and was breaking the gateways passthrough to the internet so we have removed that for now and are getting the ingress system to run the app with the direct ip rather than the host name to test and intend to find a new solution to the hostname issue with the ingress and egress systems.
