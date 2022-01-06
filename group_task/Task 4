@@ -48,4 +48,33 @@ ssh root@192.168.1.175 < dhcp.sh
 
     I then reverted the dhcp back to it's correct value form the temp one set for testing purposes.
 
+    After returning to the gateway we discovered that the script appeared to be skipping over some of the ip table commands, we are not wntirely sure which ones or why but running the gateway script twice seems to ensure that all commands are run corrcetly and this resolved the gaeway issue. All system now had access to the internet through the gateway and so the DNS script was able to install the required packages.
+
+    With all 3 of the main service scripts now able to run we had dynamic IP range being set, the DNS resolving hostnames and the gateway passing traffic through to outside the network.
+
+    Next we ran into an issue we noticed with the search domain the ingress and egress systems were using. Where the DHCP was setting the search domain to easlab.local and the 3 internal segragated systems were using that so they could ping via the app hostnames the 2 end systems were by default prioritising the easlab.co.uk search domains. It took us quite a while to figure out how to resolve this and it did come with some assistance and pointers from Rhys.
     
+    The solution eneded up being to force their external network interface to ignore DNS traffic so that it would run through the segregated network interface instead.
+    This was achived with this command:
+nmcli con mod "Wired connection 1" ipv4.ignore-auto-dns yes
+nmcli con down "Wired connection 1"
+nmcli con up "Wired connection 1"
+    This set the network intreface to ignore the DNS traffic and allow the segragated network interface to take over.
+    With this in place all systems could now ping using the app hostnames.
+
+    With most things working and each of the scripts tested individually the master script was written up so that 1 script could be called and it would handdle the running of each of the service scripts on their designated machines.
+    Once someone runs the master script it will go through each task 1 at a time, promting the user evertime it wants to ssh to a new machine to perform it's function.
+
+    With that the DHCP, DNS and Gateway scripts can now be run from 1 script and a user wishing to use this only needs to keep track of and run the 1 script and that master script will handle everything else.
+
+    Next we moved on to runnign the HTTP-Server on max's machine and having each of the other systems pull the apps down and run them.
+
+    We decided that as the apps would need to be edited anyways it was easier to simply have everyone pull down app1 and just edit the index acordingly.
+
+    We ran into some errors with the HTTP-Server where the firewalls were blocking the traffic so an exception in the firewall command was added to the script to allow the traffic through.
+
+    With that in place the script was now able to pull app1 on to each system, unzip it and then edit the index.js with the code required by each app.
+
+    When trying to run the apps however we have now run into an issue where the apps will not successfully run in the background. We have the:
+node index.js &
+    which should be running the app in the background but for some reason when running from a script like this it seems to run in the foreground regardless meaning we are unable to get all of the apps running from the master script.
