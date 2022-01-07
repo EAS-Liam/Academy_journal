@@ -100,4 +100,16 @@ firewall-cmd --reload
     Running these commands allowed an acception through the firewall on the port that the apps are using.
     With all apps running manually and each system running this firewall command we tested the apps and found they were now working as intended.
 
-    We decided to debug running the apps from scripts again but didn't want to have to 
+    We decided to debug running the apps from scripts again but didn't want to have to run everything from the master script every time so we ran the masterscript setting up the DHCP, DNS and Gateways without the apps and created snapshots of the vms at these points.
+    This allowed us to only have to run the app scripts after a snapshot reset which is a lot smoother and quicker.
+
+    At this point we made a appTroubleshoot script that was being used instead of the master script to run only the app scripts for testing purposes.
+
+    The app scripts each had the previous firewall acception command added to them before the scripts run the apps.
+    Apps 2-5 could now be run in the background from the scrips but app1 seems to be skipped over regardless of how we attempt to run it in the script.
+    If we run app 1 manually then we can confirm that all the apps are working correctly now even when being run from the scrips.
+
+    At this point we decided to merge the updated apps scripts calls from the appsTroublshoot script and back into the master.
+    We reset the vms back to their initial snapshots and tested the master script in its entirety.
+
+    Again app1 is not being run so that needs to be run manually at the end but everything else, that is to say the DHCP, DNS, Gateway and aps 2-5 all get settup and run correctly and the chain through the apps works fine.
