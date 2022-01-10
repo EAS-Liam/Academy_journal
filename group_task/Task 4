@@ -113,3 +113,11 @@ firewall-cmd --reload
     We reset the vms back to their initial snapshots and tested the master script in its entirety.
 
     Again app1 is not being run so that needs to be run manually at the end but everything else, that is to say the DHCP, DNS, Gateway and aps 2-5 all get settup and run correctly and the chain through the apps works fine.
+
+    Over the weekend Kalem had discoved a more commonly used alternative to the forever service called PM2, PM2 seemed to be a more up to date version of forever with some better functionality.
+
+    Installing and implementing PM2 in the same we we did forever earlier in the task allowed us to daemonise and run app1.
+npm install pm2 -g
+pm2 start app1/index.js
+    With app1 now running in background from script and not needing to be run manually the task is complete.
+    A single script can be run through to complete the entire task.
