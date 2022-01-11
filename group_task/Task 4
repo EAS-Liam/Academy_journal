@@ -121,3 +121,38 @@ npm install pm2 -g
 pm2 start app1/index.js
     With app1 now running in background from script and not needing to be run manually the task is complete.
     A single script can be run through to complete the entire task.
+
+
+    Improvements to remove user input:
+    One of the main issues we had requiring user input was when running ssh on a new connection first time, the user would be asked for the authentication and the user would have to input yes, this could be avoided with the following flag added to the ssh command
+-oStrictHostKeyChecking=no
+    With that flag added to the ssh the key checking would be bypassed and the user will be asked for the password regardless of whether it is the first time connecting or not.
+
+    The next major issue is the passwords. Whenever an ssh connection was made the user would be promted to input the password. A simple solution to this would be to add a user input for the password request at the top of the script and to store that input in a variable, then whenever the password is requested the script could simply input the password from the saved variabel.
+read -s password
+    By adding the -s flag the users input will also be hidden from the terminal like with other linux password inputs.
+
+    The final user input that was required by our script was with the file server and the apps. Even though they were succesfully being run in the background they will still display the foreground proccess requiring the user to ctrl+c out of them (The background process would remain running). One possible fix to this would be to use a trap command to trap the exit signal and then use that to exit the apps but a better way would be to solve the problem and not have them display in the foreground at all. We could use the PM2 command that was discovered for app1's not running problem and use that to daemnonise the proccesses in the same way and have them run as services. With this the user would not need to ctrl+c out of them at all.
+
+    With these changes the only user interaction that would be required now would be the user going into the system, pulling the scripts from git and running it and then the first act of the script asking the user for the password that will be used for the rest of the connections, Once the user has entered that password once the script should run through to completeing without the user being asked for anymore inputs.
+
+
+    Solution Testing:
+-oStrictHostKeyChecking=no
+    I tested the key checking no command and this worked as expected, this bypassed the request for a key check negating the need for a user input on this section.
+
+    I was able to use sshpass to pass in the file variable to the ssh connection. Mac by default does not allow users to download sshpass but this shouldn't be a problem with most linux distributions. I was able to manually install sshpass to test this out and then used the:
+read -s password
+    command mentioned above. This asked the user for the password at the start of the script once and can then be passed in to the ssh connection via a variable with sshpass
+sshpass -p $password ssh root@hostname
+
+    Running the http-server in the background was solved in the same way app1 was solved, using the pm2 package I could simply run the http-server with that to daemonise it and run it removing the need for the user to ctrl+c out
+pm2 start http-server
+
+    After further testing I also managed to get the expect method working.
+    You can run an expect in one line with the -c flag
+expect -c "spawn ssh root@hostname; expect \"password:\"; send \"$password\r\"; interact"
+    This will run the ssh command and expect a password request, the send then populates that expect with the given string, using the $ you can pass in a variable instead.
+
+sshpass -p $password ssh root@192.168.1.173 -oStrictHostKeyChecking=no "pkill http-server; npm install pm2 -g; pm2 start http-server; echo 'server running'"
+    This is full command run in the bash file that can ssh into the system with the password through sshpass, then make sure no other http-server is running, ensures pm2 is installed, runs the http-server daemonised with pm2 and finally echos out 'server running' to show that more commands can be run without further user input needed, then the ssh connection finishes.
