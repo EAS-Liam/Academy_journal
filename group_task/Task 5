@@ -1,0 +1,29 @@
+    Task 5 is to start using Chef to automate the process of the previous tasks. 
+    With this one we will exclusively be using chef-client and running the recipies locally.
+    In the future we will be repeating these steps using chef server.
+
+    Starting out I installed chef on a VM for testing.
+    On this VM I setup a new chef repo, generated a new cookbook called gateway.
+chef generate cookbook -b gateway
+    The -b flag on the generate command ensures that a Berkshelf file is created along with the cookbook.
+
+    Using the Berkshelf I can add the iptables cookbook from the supermarket.
+berks install
+    Running this command will install any cookbooks pointed at in the berks file from the supermarket.
+
+    From my gateway cookbook I needed to run the vendor command to pull the iptables cookbook from the cach and into my repo.
+berks vendor ../
+    Running the vendor command needs to be run from my cookbook but the ../ ensures that the iptabels cookbook is placed in the cookbooks directory rather than nesting it in my own cookbook.
+
+    With the iptables cookbook installed I needed to add it as a dependancy in the metadata.rb file of my gateway cookbook.
+
+    Now my recipe in my gateway cookbook can use the iptables recipies.
+
+    I am able to run the recipes within the installed iptables cookbook by overwriting the runlist.
+chef-client -z -o recipe[iptables::default]
+    This will override the default run list and specifically run the default recipe in the iptables cookbook.
+    I can use this method to run each of the recipes in the iptables cookbook but this isn't an ideal solution.
+    I need to work out how I can have my recipe run them instead so that when I override with my recipe it will run the iptables recipes in turn.
+
+    The other issue I still have is that these recipes will be running with default setups. I need to work out how I pass in the attributes to have them configure the settings in the way that I need.
+    Then when I run my recipe it can configure the settings of the iptables and apply them using the iptables cookbook from the chef supermarket.
