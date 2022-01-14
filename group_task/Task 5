@@ -27,3 +27,17 @@ chef-client -z -o recipe[iptables::default]
 
     The other issue I still have is that these recipes will be running with default setups. I need to work out how I pass in the attributes to have them configure the settings in the way that I need.
     Then when I run my recipe it can configure the settings of the iptables and apply them using the iptables cookbook from the chef supermarket.
+
+    Aftre spending some time looking through the github page of the iptables cookbook I inspected the test files they had, these files have helped shed some light on how I can set some attributes.
+
+    Inside of my recipe I now attempt to set some iptables rules.
+    
+iptables_rule 'FORWARD ens160' do
+        table :filter
+        chain :FORWARD
+        ip_version :ipv4
+        jump 'ACCEPT'
+        in_interface 'ens160'
+end
+
+    Above is an example of how I am attempting to set the forward rule for the ens160 network interface.
