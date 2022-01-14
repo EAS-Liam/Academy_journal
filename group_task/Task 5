@@ -41,3 +41,5 @@ iptables_rule 'FORWARD ens160' do
 end
 
     Above is an example of how I am attempting to set the forward rule for the ens160 network interface.
+
+    After some playing around and troubleshooting I finally managed to get this running and now when I run my recipe it disables and flushes the current iptables rule set and then setups and configures the iptables with my ruleset.
