@@ -43,3 +43,22 @@ end
     Above is an example of how I am attempting to set the forward rule for the ens160 network interface.
 
     After some playing around and troubleshooting I finally managed to get this running and now when I run my recipe it disables and flushes the current iptables rule set and then setups and configures the iptables with my ruleset.
+
+    The next stage was a write some lines to a few config files. This tripped me up for a little while as I could not seem to fine a nice Chef based way to append contect to a file or edit existing lines. I found some results on inserting bash into your recipe to do this but that would defeat the whole point of this task so I didn't want to have to use it unless no other solution was found.
+    Lucky I came across a result that showed hot to do it the pure Ruby way which appealed to me a lot more than using bash.
+    This method let me insert a Ruby block into my chef recipe and just use ruby code to open and edit file.
+    By using Ruby's file edit functionality I get a lot of usful options like the ability to only insert a line if no line like it already exists or replace/delete existing lines. This used correctly would give me a lot of control over how I wish to insert my content into the configuration files that I wish to edit.
+
+ruby_block "insert_line" do
+  block do
+          file = Chef::Util::FileEdit.new("/etc/sysctl.conf")
+          file.insert_line_if_no_match("net.ipv4.ip_forward=1", "net.ipv4.ip_forward=1")
+          file.write_file
+  end
+end
+
+    Above is an example of one of the files I needed to edit and how I do it.
+    using a ruby_block I specify the file I want to edit, then use the insert line if no match file insert method which allows me to give an expression to search for and if there are no matches then I can specify what I want to add.
+    Then simply write that file.
+
+    The ruby_block can also contain multiple blocks inside so I can have a block for each file that needs to be edited all inside the single ruby_block.
